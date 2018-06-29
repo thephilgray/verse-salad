@@ -1,11 +1,11 @@
 <template lang="pug">
   main.app__main
     ProgressBar(:percentage="50")
-    UserPoemPreview(:userPoem="userPoem" v-if="currentLineNumber > 0")
+    EndWord(:word="currentLastWordInPoemLine" v-if="!poemComplete")
+    UserPoemPreview(:userPoem="userPoem" :writingMode="!poemComplete")
+    CurrentLine(v-if="!poemComplete" @onUpdateCurrentLine="updateSyllables" :isValid="userLineIsValid")
     template(v-if="!poemComplete")
-      EndWord(:word="currentLastWordInPoemLine")
       LineNumber(:total="totalNumberOfLines" :linesComplete="linesComplete")
-      CurrentLine(@onUpdateCurrentLine="updateSyllables" :isValid="userLineIsValid")
       SyllablesCount(:complete="Number(syllablesComplete)" :total="Number(totalNumberOfSyllables)" :isValid="userLineIsValid")
       EndWordCheck(:matches="endWordMatches")
     StatusMessage(:message="statusMessage")
@@ -49,19 +49,19 @@ export default {
         author: "John Clare",
         lines: [
           "When first we hear the shy-come nightingales,",
-          "They seem to mutter oer their songs in fear,"
-          // "And, climb we eer so soft the spinney rails,",
-          // "All stops as if no bird was anywhere."
-          // "The kindled bushes with the young leaves thin",
-          // "Let curious eyes to search a long way in,",
-          // "Until impatience cannot see or hear",
-          // "The hidden music; gets but little way",
-          // "Upon the path--when up the songs begin,",
-          // "Full loud a moment and then low again.",
-          // "But when a day or two confirms her stay",
-          // "Boldly she sings and loud for half the day;",
-          // "And soon the village brings the woodman's tale",
-          // "Of having heard the newcome nightingale."
+          "They seem to mutter oer their songs in fear,",
+          "And, climb we eer so soft the spinney rails,",
+          "All stops as if no bird was anywhere.",
+          "The kindled bushes with the young leaves thin",
+          "Let curious eyes to search a long way in,",
+          "Until impatience cannot see or hear",
+          "The hidden music; gets but little way",
+          "Upon the path--when up the songs begin,",
+          "Full loud a moment and then low again.",
+          "But when a day or two confirms her stay",
+          "Boldly she sings and loud for half the day;",
+          "And soon the village brings the woodman's tale",
+          "Of having heard the newcome nightingale."
         ],
         linecount: "14"
       }
@@ -134,20 +134,9 @@ export default {
 </script>
 
 <style lang="scss">
-html {
-  box-sizing: border-box;
-}
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.app__main {
+  max-width: 50em;
+  margin: 0 auto;
+  padding: 0 1em;
 }
 </style>

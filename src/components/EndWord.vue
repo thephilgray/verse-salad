@@ -27,7 +27,8 @@ export default {
 }
 
 .endWord__letter {
-  background: yellow;
+  background: #bdd684;
+  color: #10222b;
   padding: 0.25em 1em;
   margin: 0.25em;
 }

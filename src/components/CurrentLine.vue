@@ -1,7 +1,7 @@
 <template lang="pug">
     form.currentLine(@submit.prevent)
         label.currentLine__label.--sr-only(for="currentLine") Current Line
-        input.currentLine__textInput(type="text" name="currentLine" v-model="line" ref="currentLine" @keyup="handleKeyUp" autocomplete="off" autofocus disalbed="isValid")
+        input.currentLine__textInput(type="text" name="currentLine" v-model="line" ref="currentLine" @keyup="handleKeyUp" autocomplete="off" autofocus :class="{'--isValid': isValid}")
 </template>
 
 <script>
@@ -44,10 +44,24 @@ export default {
 <style lang="scss" scoped>
 .currentLine {
   width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 4em;
+  background: #10222b;
 }
 .currentLine__textInput {
   width: 100%;
-  padding: 1em;
+  padding: 0.25em;
+  margin: 0;
   text-align: center;
+  background: #10222b;
+  color: #f6ffe0;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+  &.--isValid {
+    color: #2cab63;
+  }
 }
 </style>
