@@ -1,5 +1,6 @@
 <template lang="pug">
     .userPoemPreview(:class="{'--writing': writingMode}")
+      slot(name="LinesComplete")
       .userPoemPreview__contentBox
         transition-group(name="slide-up" mode="in-out" tag="div" v-if="userPoem.length > 0")
           p.userPoemPreview__line(v-for="line in userPoem" :key="line") {{line}}
@@ -22,13 +23,15 @@ export default {
 <style lang="scss" scoped>
 .userPoemPreview {
   width: 100%;
-  margin-bottom: 0;
-  padding-bottom: 0;
+
   background: #10222b;
   color: #f6ffe0;
   position: relative;
+  padding: 1em;
 }
 .userPoemPreview.--writing {
+  padding: 0;
+  margin-bottom: 0;
   overflow: hidden;
   height: 4em;
   &:before {
@@ -60,6 +63,14 @@ export default {
   padding: 0;
   margin: 0;
 }
+
+.lineNumber {
+  position: absolute;
+  padding: 0.5em;
+  color: white;
+  z-index: 101;
+}
+
 .slide-up-item {
   display: inline-block;
 }

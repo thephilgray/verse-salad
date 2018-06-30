@@ -21,9 +21,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .endWord {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
 }
 
 .endWord__letter {

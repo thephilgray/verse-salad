@@ -1,6 +1,6 @@
 <template lang="pug">
     .syllablesCount
-        span.syllablesCount__label Syllables Count: 
+        span.syllablesCount__label Syllables: 
         span.syllablesCount__complete(:class="{'--isValid': isValid}") {{complete}}
         span.syllablesCount__divider  / 
         span.syllablesCount__total {{total}}
@@ -27,7 +27,7 @@ export default {
 .syllablesCount__complete {
   color: red;
   &.--isValid {
-    color: green;
+    color: #2cab63;
   }
 }
 </style>

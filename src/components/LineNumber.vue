@@ -1,6 +1,6 @@
 <template lang="pug">
     .lineNumber
-        span.lineNumber__label Lines Complete: 
+        span.lineNumber__label.--sr-only Lines Complete: 
         span.lineNumber__linesComplete {{linesComplete}}
         span.lineNumber__divider  / 
         span.lineNumber__total {{total}}

@@ -1,6 +1,6 @@
 <template lang="pug">
     .endWordCheck
-        span.endWordCheck__message(:class="{'--valid': matches}") End Word: {{matches}}
+        span.endWordCheck__message(:class="{'--valid': matches}") {{matches}}
 </template>
 
 <script>

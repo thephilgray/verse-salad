@@ -1,7 +1,9 @@
 <template lang="pug">
-    form.currentLine(@submit.prevent)
+  .currentLine
+    form(@submit.prevent)
         label.currentLine__label.--sr-only(for="currentLine") Current Line
         input.currentLine__textInput(type="text" name="currentLine" v-model="line" ref="currentLine" @keyup="handleKeyUp" autocomplete="off" autofocus :class="{'--isValid': isValid}")
+    slot(name="LineValidation")
 </template>
 
 <script>
@@ -48,6 +50,7 @@ export default {
   padding: 0;
   height: 4em;
   background: #10222b;
+  position: relative;
 }
 .currentLine__textInput {
   width: 100%;
@@ -63,5 +66,12 @@ export default {
   &.--isValid {
     color: #2cab63;
   }
+}
+
+.syllablesCount {
+  color: #f6ffe0;
+  padding: 0.5em;
+  position: absolute;
+  right: 0;
 }
 </style>

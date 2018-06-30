@@ -13,3 +13,11 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.statusMessage {
+  text-align: center;
+  // background: #10222b;
+  // color: #f6ffe0;
+  padding: 0.5em;
+}
+</style>

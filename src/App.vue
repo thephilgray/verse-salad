@@ -3,11 +3,11 @@
     ProgressBar(:percentage="50")
     EndWord(:word="currentLastWordInPoemLine" v-if="!poemComplete")
     UserPoemPreview(:userPoem="userPoem" :writingMode="!poemComplete")
+      template(slot="LinesComplete" v-if="!poemComplete")
+        LineNumber(:total="totalNumberOfLines" :linesComplete="linesComplete")
     CurrentLine(v-if="!poemComplete" @onUpdateCurrentLine="updateSyllables" :isValid="userLineIsValid")
-    template(v-if="!poemComplete")
-      LineNumber(:total="totalNumberOfLines" :linesComplete="linesComplete")
-      SyllablesCount(:complete="Number(syllablesComplete)" :total="Number(totalNumberOfSyllables)" :isValid="userLineIsValid")
-      EndWordCheck(:matches="endWordMatches")
+      template(slot="LineValidation" v-if="!poemComplete")
+        SyllablesCount(:complete="Number(syllablesComplete)" :total="Number(totalNumberOfSyllables)" :isValid="userLineIsValid")
     StatusMessage(:message="statusMessage")
 </template>
 
@@ -67,6 +67,7 @@ export default {
       }
     };
   },
+  mounted() {},
   computed: {
     previousLineInPoem() {
       return this.currentLineNumber > 0
@@ -111,10 +112,13 @@ export default {
     },
     statusMessage() {
       if (this.userLineIsValid && this.poemComplete) {
-        return "poem complete. share.";
+        return "Poem complete. Share";
       } else if (this.userLineIsValid && !this.poemComplete) {
-        return "line complete. enter punctuation or return.";
-      } else return "not complete";
+        return "Line complete. Enter punctuation or return.";
+      } else
+        return `Compose a line ${
+          this.totalNumberOfSyllables
+        } syllables long and ending with '${this.currentLastWordInPoemLine}'.`;
     }
   },
   methods: {
