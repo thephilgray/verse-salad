@@ -1,6 +1,6 @@
 <template lang="pug">
   main.app__main
-    ProgressBar(:percentage="50")
+    ProgressBar(:percentage="timer")
     EndWord(:word="currentLastWordInPoemLine" v-if="!poemComplete")
     UserPoemPreview(:userPoem="userPoem" :writingMode="!poemComplete")
       template(slot="LinesComplete" v-if="!poemComplete")
@@ -43,6 +43,7 @@ export default {
       currentLineNumber: 0,
       currentUserInput: "",
       userPoem: [],
+      timer: 100,
       // here fore mocking
       poem: {
         title: "Early Nightingale",
@@ -67,7 +68,9 @@ export default {
       }
     };
   },
-  mounted() {},
+  mounted() {
+    this.startTimer();
+  },
   computed: {
     previousLineInPoem() {
       return this.currentLineNumber > 0
@@ -108,10 +111,12 @@ export default {
       );
     },
     poemComplete() {
-      return this.totalNumberOfLines === this.userPoem.length;
+      return (
+        this.timer === 0 || this.totalNumberOfLines === this.userPoem.length
+      );
     },
     statusMessage() {
-      if (this.userLineIsValid && this.poemComplete) {
+      if (this.poemComplete) {
         return "Poem complete. Share";
       } else if (this.userLineIsValid && !this.poemComplete) {
         return "Line complete. Enter punctuation or return.";
@@ -128,10 +133,22 @@ export default {
         this.currentUserInput = "";
         this.syllablesComplete = 0;
         this.currentLineNumber++;
+        this.timer = 100;
       } else {
         this.currentUserInput = currentInput;
         this.syllablesComplete = numberOfSyllables(currentInput);
       }
+    },
+    startTimer() {
+      let that = this;
+      function decreaseTimer() {
+        if (that.timer <= 1 || that.poemComplete) {
+          clearInterval(timer);
+        }
+        that.timer = that.timer - 1;
+      }
+
+      const timer = setInterval(decreaseTimer, 500);
     }
   }
 };
