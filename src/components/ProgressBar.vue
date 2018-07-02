@@ -15,12 +15,15 @@ export default {
 </script>
 <style lang="scss" scoped>
 .progressBar {
+  position: relative;
   width: 100%;
   height: 1em;
   border: 1px solid black;
+  overflow: hidden;
 }
 .progressBar__fill {
-  background: green;
+  position: absolute;
+  background: #2cab63;
   height: 1em;
   padding: 0;
   margin: 0;
