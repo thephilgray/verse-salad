@@ -6,13 +6,12 @@ const port = process.env.PORT || "3000";
 const app = express();
 
 app.use(bodyParser.json());
+// const lines = req.params.lines;
+// const url = `http://poetrydb.org/linecount/${lines}:abs`;
 
 app.get("/linecount/:lines", cors(), async (req, res) => {
-  const lines = req.params.lines;
   try {
-    const { data } = await axios.get(
-      `http://poetrydb.org/linecount/${lines}:abs`
-    );
+    const { data } = await axios.get(`http://localhost:4000/`);
     res.status(200).send({ data });
   } catch (e) {
     res.status(400).send({ error: e });

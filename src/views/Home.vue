@@ -1,5 +1,5 @@
 <template lang="pug">
-div
+div(v-if="poem")
     ProgressBar(:percentage="timer" v-if="!poemComplete")
     EndWord(:word="currentLastWordInPoemLine" v-if="!poemComplete")
     UserPoemPreview(:userPoem="userPoem" :writingMode="!poemComplete")
@@ -12,7 +12,9 @@ div
 </template>
 
 <script>
-import axios from "axios";
+import Chance from "chance";
+const chance = new Chance();
+
 import EndWord from "@/components/EndWord";
 import ProgressBar from "@/components/ProgressBar";
 import UserPoemPreview from "@/components/UserPoemPreview";
@@ -45,25 +47,29 @@ export default {
       currentUserInput: "",
       userPoem: [],
       timer: 100,
-      // here fore mocking
-      poem: {
-        title: "Grasshoppers",
-        author: "John Clare",
-        lines: [
-          "Grasshoppers go in many a thumming spring",
-          "And now to stalks of tasseled sow-grass cling,",
-          "That shakes and swees awhile, but still keeps straight;",
-          "While arching oxeye doubles with his weight.",
-          "Next on the cat-tail-grass with farther bound",
-          "He springs, that bends until they touch the ground."
-        ],
-        linecount: "6"
-      }
+      poem: null
     };
   },
 
   mounted() {
-    this.startTimer();
+    let fetchedPoems = this.$store.state.fetchedPoems;
+    if (!fetchedPoems) {
+      this.$store
+        .dispatch("fetchPoems")
+        .then(() => {
+          fetchedPoems = this.$store.state.fetchedPoems.poems;
+          this.setRandomPoem(fetchedPoems);
+          this.startTimer();
+        })
+        .catch(e => {
+          // handle error
+          // eslint-disable-next-line
+        console.log(`error, ${e}`);
+        });
+    } else {
+      this.setRandomPoem(fetchedPoems.poems);
+      this.startTimer();
+    }
   },
   computed: {
     previousLineInPoem() {
@@ -121,6 +127,14 @@ export default {
     }
   },
   methods: {
+    setRandomPoem(poems) {
+      const randomIndex = chance.integer({
+        min: 0,
+        max: poems.length - 1
+      });
+      this.poem = poems[randomIndex];
+    },
+
     updateSyllables({ keycode, currentInput }) {
       if (keycode === 13 && this.userLineIsValid) {
         this.userPoem.push(this.currentUserInput);
@@ -128,19 +142,22 @@ export default {
         this.syllablesComplete = 0;
         this.currentLineNumber++;
         this.timer = 100;
+      }
+      if (keycode === 27) {
+        this.timer = 0;
       } else {
         this.currentUserInput = currentInput;
         this.syllablesComplete = numberOfSyllables(currentInput);
       }
     },
     startTimer() {
-      let that = this;
-      function decreaseTimer() {
-        if (that.timer <= 1 || that.poemComplete) {
+      const decreaseTimer = () => {
+        if (this.timer <= 1 || this.poemComplete) {
           clearInterval(timer);
+        } else {
+          this.timer = this.timer - 1;
         }
-        that.timer = that.timer - 1;
-      }
+      };
 
       const timer = setInterval(decreaseTimer, 500);
     }
