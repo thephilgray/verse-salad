@@ -152,14 +152,14 @@ export default {
     },
     startTimer() {
       const decreaseTimer = () => {
-        if (this.timer <= 1 || this.poemComplete) {
+        if (this.timer < 1 || this.poemComplete) {
           clearInterval(timer);
         } else {
           this.timer = this.timer - 1;
         }
       };
 
-      const timer = setInterval(decreaseTimer, 500);
+      const timer = setInterval(decreaseTimer, 100);
     }
   }
 };
